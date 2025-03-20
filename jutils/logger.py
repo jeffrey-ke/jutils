@@ -2,6 +2,7 @@ from torch.utils.tensorboard import SummaryWriter
 import torch
 # Singleton writer instance
 _writer_instance = None
+_writer_name = None
 _iter_dict = {}
 
 def get_id_cur_step(id):
@@ -10,14 +11,17 @@ def get_id_cur_step(id):
 # aliases:
 get_step = get_id_cur_step
 
-
+"""
+log_dir is deprecated
+"""
 def get_writer(log_dir="runs", with_id=None):
     """Get a singleton instance of the TensorBoard SummaryWriter."""
-    global _writer_instance
+    global _writer_instance, _writer_name
     if id is not None:
         _iter_dict.setdefault(id, 0)
     if _writer_instance is None:
-        _writer_instance = SummaryWriter(log_dir)
+        _writer_name = input("Name for log: (will be placed in runs/) ")
+        _writer_instance = SummaryWriter(f"runs/{_writer_name}")
     return _writer_instance
 
 def close_writer():
