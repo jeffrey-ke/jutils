@@ -23,3 +23,7 @@ def xavier_init(module):
         if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
             nn.init.xavier_normal_(m.weight)
 
+
+def batch_size(tensor):
+    return tensor.shape[0]
+
