@@ -37,3 +37,17 @@ def gradient(outputs, inputs):
                                     create_graph=True,
                                     retain_graph=True)
     return grad[0]
+def get_params(model, exclude=None):
+
+    if exclude==None:
+        exclude=[]
+        print("grabbing all parameters!")
+    params = [param for name,param in model.named_parameters()
+            if not any(excluded in name for excluded in exclude)]
+    print(len(params))
+    return params
+
+def channel_last(batched_images):
+    # precondition: shape is (B,C,H,W)
+    t = batched_images.permute((0,2,3,1))
+    return t
