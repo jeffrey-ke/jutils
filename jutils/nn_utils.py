@@ -27,3 +27,8 @@ def xavier_init(module):
 def batch_size(tensor):
     return tensor.shape[0]
 
+def batchify(single_tensor):
+    return single_tensor.unsqueeze(0)
+
+def unbatchify(single_batched_tensor):
+    return single_batched_tensor.squeeze(0)
