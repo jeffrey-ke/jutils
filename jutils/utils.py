@@ -1,7 +1,7 @@
 import torch
 import functools
-import pdb as p
-
+import ipdb as p
+import os
 def ensure_same_device(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -24,8 +24,10 @@ def ensure_same_device(func):
 
     return wrapper
 
+
 def pdb():
     p.set_trace()
+
 
 @ensure_same_device
 def gradient(outputs, inputs):
@@ -37,17 +39,22 @@ def gradient(outputs, inputs):
                                     create_graph=True,
                                     retain_graph=True)
     return grad[0]
-def get_params(model, exclude=None):
 
+
+def get_params(model, exclude=None):
     if exclude==None:
         exclude=[]
-        print("grabbing all parameters!")
     params = [param for name,param in model.named_parameters()
             if not any(excluded in name for excluded in exclude)]
     print(len(params))
     return params
 
+
 def channel_last(batched_images):
     # precondition: shape is (B,C,H,W)
     t = batched_images.permute((0,2,3,1))
     return t
+
+
+def load_images(path):
+    pass
