@@ -2,3 +2,4 @@ jutils.egg-info/
 *__pycache__*
 *runs*
 *.swp
+build
