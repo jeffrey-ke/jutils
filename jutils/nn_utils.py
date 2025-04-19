@@ -32,3 +32,15 @@ def batchify(single_tensor):
 
 def unbatchify(single_batched_tensor):
     return single_batched_tensor.squeeze(0)
+
+def loraify(model, include=["attn", "linear"], r=4):
+    for name, module in model.modules():
+        if isinstance(module, nn.Linear) or any(inc in name for inc in include):
+            def get_immediate_parent(parent_obj, parent_arr):
+                parent = parent_obj
+                for p in parent_arr:
+                    parent = getattr(parent, p)
+                return parent
+            *parent_arr, child = name.split(".")
+            immediate_parent = get_immediate_parent(model, parent_arr)
+            setattr(immediate_parent, child, LoRA(module, r=r))
