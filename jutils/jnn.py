@@ -31,3 +31,17 @@ def ConvTDouble(nn.Module):
         return self.me(X)
 
 """
+class LoRA(nn.Module):
+    def __init__(self, linear, r=4, alpha=16):
+        super().__init__()
+        self.mat_a = nn.Linear(linear.in_features, r, bias=False)
+        self.mat_b = nn.Linear(r, linear.out_features, bias=False)
+        self.wrapped = linear
+        nn.init.kaiming_normal_(self.mat_a)
+        nn.init.zeros_(self.mat_b)
+        self.wrapped.requires_grad_(False)
+        self.scaling = alpha / r
+
+    def forward(self, X):
+        h = self.wrapped(X) + self.mat_b(self.mat_a(X)) * self.scaling
+        return h
