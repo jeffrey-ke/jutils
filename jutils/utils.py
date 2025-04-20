@@ -2,6 +2,7 @@ import torch
 import functools
 import ipdb as p
 import os
+import sys
 def ensure_same_device(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -58,3 +59,7 @@ def channel_last(batched_images):
 
 def load_images(path):
     pass
+
+def add_module_to_path(module_path):
+    path_to_module = os.path.abspath(os.path.join(os.getcwd(), module_path))
+    sys.path.append(path_to_module)
