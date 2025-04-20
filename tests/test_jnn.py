@@ -11,9 +11,11 @@ def test_lora():
     assert y == y_lora, "LoRA not outputting the same pred on init."
 
 def test_loraify():
+    raise NotImplemented
     resnet = Resnet(loaded_weights=True)
     loraify(resnet)
     assert resnet.modules() contains jnn.LoRA
     logs = train(resnet) on offtopic_dataset
     assert logs.loss decreases
+
 
