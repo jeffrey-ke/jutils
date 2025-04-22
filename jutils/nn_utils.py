@@ -90,6 +90,8 @@ def loraify_deprecated(model, include=["attn", "linear"], r=4):
 def unlorafy_state_dict(state_dict):
     new_sd = OrderedDict()
     for k,v in list(state_dict.items()):
+        if "lora_A" in k or "lora_B" in k:
+            continue
         new_k = k.replace("base_model.model.", "").replace("base_layer.", "")
         new_sd[new_k] = v
     return new_sd
