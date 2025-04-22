@@ -86,3 +86,11 @@ def loraify_deprecated(model, include=["attn", "linear"], r=4):
             immediate_parent = get_immediate_parent(model, parent_arr)
             setattr(immediate_parent, child, LoRA(module, r=r))
             #TODO: some logging utility would be nice: like logger.log(immediate_parent, child)
+
+def unlorafy_state_dict(state_dict):
+    new_sd = OrderedDict()
+    for k,v in list(state_dict.items()):
+        new_k = k.replace("base_model.model.", "").replace("base_layer.", "")
+        new_sd[new_k] = v
+    return new_sd
+
