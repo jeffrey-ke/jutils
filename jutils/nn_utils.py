@@ -1,4 +1,6 @@
+from collections import OrderedDict
 import torch
+from jutils.utils import pdb
 from peft import LoraConfig, get_peft_model, TaskType
 import torch.nn as nn
 from jutils.jnn import LoRA
@@ -35,7 +37,7 @@ def batchify(single_tensor):
 def unbatchify(single_batched_tensor):
     return single_batched_tensor.squeeze(0)
 
-def loraify(model):
+def lorafy(model):
     lora_cfg = LoraConfig(
         r               = 8,
         lora_alpha      = 32,
