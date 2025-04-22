@@ -14,13 +14,16 @@ get_step = get_id_cur_step
 """
 log_dir is deprecated
 """
-def get_writer(log_dir="runs", with_id=None):
+def get_writer(log_dir="runs", with_id=None, experiment=None):
     """Get a singleton instance of the TensorBoard SummaryWriter."""
     global _writer_instance, _writer_name
     if id is not None:
         _iter_dict.setdefault(id, 0)
     if _writer_instance is None:
-        _writer_name = input("Name for log: (will be placed in runs/) ")
+        if experiment is None:
+            _writer_name = input("Name for log: (will be placed in runs/) ")
+        else:
+            _writer_name = experiment
         _writer_instance = SummaryWriter(f"runs/{_writer_name}")
     return _writer_instance
 
