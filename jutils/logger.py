@@ -1,4 +1,8 @@
 from torch.utils.tensorboard import SummaryWriter
+import open3d as o3d
+from jutils.utils import pdb
+from matplotlib import pyplot as plt
+from pathlib import Path
 import torch
 # Singleton writer instance
 _writer_instance = None
@@ -65,3 +69,19 @@ def log_gradients(model, step, logdir="runs", tag="Model", only_name=None):
 #            # Log gradient norm (magnitude)
 #            grad_norm = torch.norm(grad)
 #            writer.add_scalar(f"{tag}/grad_norm/{name}", grad_norm.item(), step)
+
+def _plot_3d(axes, points, label, color):
+    x, y, z = points[:, 0], points[:, 1], points[:, 2]
+    axes.scatter(x, y, z, c=color, label=label)
+    
+# to be able to plot multiple point clouds in one 3d graph:
+# have the point cloud's name
+def plot_3d(points_dict, name):
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    for label, (pc, color) in points_dict.items():
+        _plot_3d(ax, pc, label,  color)
+    ax.legend()
+    path = Path.cwd() / "graphs"
+    path.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path / f"{name}.png")
